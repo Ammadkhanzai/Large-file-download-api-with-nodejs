@@ -30,7 +30,7 @@ app.get('/read-windows', function(req, res , next) {
     // if(req.headers.referer !== 'http://nexeclient.xyz/'){
     //   throw new Error(`request not allowed`)
     // }
-    const domain = 'http://nexeclient.xyz/bandini/access/Unigine_Heaven-4.0.exe';
+    const domain = 'https://nexeclient.xyz/bandini/access/Unigine_Heaven-4.0.exe';
     res.download(domain);
     
     // const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
