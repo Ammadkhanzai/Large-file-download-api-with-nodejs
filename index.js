@@ -31,7 +31,7 @@ app.get('/read-windows', function(req, res , next) {
     //   throw new Error(`request not allowed`)
     // }
     const domain = 'https://nexeclient.xyz/bandini/access/Unigine_Heaven-4.0.exe';
-    res.download(domain);
+    return res.download(domain);
     
     // const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
     
