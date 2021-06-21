@@ -6,18 +6,19 @@ const cors = require("cors");
 const app = express();
 
 
-var whitelist = ['http://nexecube.xyz']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  // Credentials:true
-}
-app.use(cors(corsOptions));
+// var whitelist = ['http://nexecube.xyz']
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   },
+//   // Credentials:true
+// }
+// app.use(cors(corsOptions));
+app.use(cors());
 
 app.set('port', 9999);
 
