@@ -31,24 +31,8 @@ app.get('/read-windows', function(req, res , next) {
     //   throw new Error(`request not allowed`)
     // }
     const domain = 'http://nexeclient.xyz/bandini/access/Unigine_Heaven-4.0.exe';
-    
-    // const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
     const targetPath = domain
-    console.log("targated path=",targetPath)
-    fs.stat( targetPath,  function (err, inodeStatus) {
-      if (err) {
-        // file does not exist-
-        if (err.code === 'ENOENT' ) {
-          console.log('No file or directory at',targetPath)
-          return res.status(404).json({success: false , data : `No file or directory at ,${targetPath}` })
-        }
-        // miscellaneous error (e.g. permissions)
-        console.error('Miscellaneous Error Found',err)
-        return res.status(404).json({success: false , data : `Miscellaneous ,${err}` })
-      }
-      var isDirectory = inodeStatus.isDirectory()
-      var sizeInBytes = inodeStatus.size
-      const file = fs.createReadStream(targetPath)
+    const file = fs.createReadStream(targetPath)
       // check if file steam contain error
       const onError = file.on("error", err => {
         file.close();
@@ -65,19 +49,53 @@ app.get('/read-windows', function(req, res , next) {
         // "Content-Disposition" : "attachment; filename=" + req.query.source })
       // start pipe the streaming file
       let transfered = file.pipe(res)
-      const TransferedOnFinish = transfered.on("finish", () => {
-        file.close();
-        console.log("file finish download")
-        return {'code':true,'message':'User successfully downloaded the software.'};
-      });
-      const TransferedOnError = transfered.on("error", err => {
-        file.close();
-        console.log('Error occure while downloading! message follow as : ', err.message)
-        return {'code':true,'message': err.message };              
-      });
-      return;
+    
+    // const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
+    
+    // console.log("targated path=",targetPath)
+    // fs.stat( targetPath,  function (err, inodeStatus) {
+    //   if (err) {
+    //     // file does not exist-
+    //     if (err.code === 'ENOENT' ) {
+    //       console.log('No file or directory at',targetPath)
+    //       return res.status(404).json({success: false , data : `No file or directory at ,${targetPath}` })
+    //     }
+    //     // miscellaneous error (e.g. permissions)
+    //     console.error('Miscellaneous Error Found',err)
+    //     return res.status(404).json({success: false , data : `Miscellaneous ,${err}` })
+    //   }
+    //   var isDirectory = inodeStatus.isDirectory()
+    //   var sizeInBytes = inodeStatus.size
+    //   const file = fs.createReadStream(targetPath)
+    //   // check if file steam contain error
+    //   const onError = file.on("error", err => {
+    //     file.close();
+    //   // create file read stream
+    //     console.log('Error: Stream cannot created! message follow as : ', err.message)
+    //     return {'code':true,'message':err.message};
+    //   });
+    //   // respond with error as stream didnt get created.
+    //   if(onError.code) return res.status(404).json({success: false , data : onError.message })
+    //   // set headers for file
+    //   res.status(200).header({ 
+    //     "Content-Type": "application/octet-stream",
+    //     "Content-Disposition" : "attachment; filename=" + 'Unigine_Heaven-4.0.exe' })
+    //     // "Content-Disposition" : "attachment; filename=" + req.query.source })
+    //   // start pipe the streaming file
+    //   let transfered = file.pipe(res)
+    //   const TransferedOnFinish = transfered.on("finish", () => {
+    //     file.close();
+    //     console.log("file finish download")
+    //     return {'code':true,'message':'User successfully downloaded the software.'};
+    //   });
+    //   const TransferedOnError = transfered.on("error", err => {
+    //     file.close();
+    //     console.log('Error occure while downloading! message follow as : ', err.message)
+    //     return {'code':true,'message': err.message };              
+    //   });
+    //   return;
       
-    })
+    // })
   }catch(err){
     return res.status(403).json({success: false , data : `Miscellaneous ,${err.message}` })
   }
