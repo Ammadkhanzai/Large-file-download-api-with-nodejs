@@ -6,25 +6,29 @@ const cors = require("cors");
 const app = express();
 
 
-// var whitelist = ['http://nexecube.xyz', 'http://localhost:9999']
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   },
-//   // Credentials:true
-// }
-// app.use(cors(corsOptions));
-
+var whitelist = ['http://nexecube.xyz']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  // Credentials:true
+}
+app.use(cors(corsOptions));
 
 app.set('port', 9999);
 
 app.get('/read-windows', function(req, res , next) {
-
+  
   try{
+    console.log(req.headers.referer)
+    // check whether the request is comming from the valid source
+    if(req.headers.referer !== 'http://nexeclient.xyz/'){
+      throw new Error(`request not allowed`)
+    }
     const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
     console.log("targated path=",targetPath)
     fs.stat( targetPath,  function (err, inodeStatus) {
@@ -67,7 +71,7 @@ app.get('/read-windows', function(req, res , next) {
         return {'code':true,'message': err.message };              
       });
       return;
-      // localhost:9999/read-windows?destination=torrent&source=BitTorrent.exe
+      
     })
   }catch(err){
     return res.status(403).json({success: false , data : `Miscellaneous ,${err.message}` })
@@ -76,7 +80,6 @@ app.get('/read-windows', function(req, res , next) {
 
 });
 app.get('/received', function(req, res , next) {
-    console.log("here")
     res.status(200).json("data received");
 });
 
