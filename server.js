@@ -26,10 +26,13 @@ app.get('/read-windows', function(req, res , next) {
   try{
     console.log(req.headers.referer)
     // check whether the request is comming from the valid source
-    if(req.headers.referer !== 'http://nexeclient.xyz/'){
-      throw new Error(`request not allowed`)
-    }
-    const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
+    // if(req.headers.referer !== 'http://nexeclient.xyz/'){
+    //   throw new Error(`request not allowed`)
+    // }
+    const domain = 'http://nexeclient.xyz/bandini/access/Unigine_Heaven-4.0.exe';
+    
+    // const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
+    const targetPath = domain
     console.log("targated path=",targetPath)
     fs.stat( targetPath,  function (err, inodeStatus) {
       if (err) {
@@ -57,7 +60,8 @@ app.get('/read-windows', function(req, res , next) {
       // set headers for file
       res.status(200).header({ 
         "Content-Type": "application/octet-stream",
-        "Content-Disposition" : "attachment; filename=" + req.query.source })
+        "Content-Disposition" : "attachment; filename=" + 'Unigine_Heaven-4.0.exe' })
+        // "Content-Disposition" : "attachment; filename=" + req.query.source })
       // start pipe the streaming file
       let transfered = file.pipe(res)
       const TransferedOnFinish = transfered.on("finish", () => {
