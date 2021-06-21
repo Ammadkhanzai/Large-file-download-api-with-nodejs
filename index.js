@@ -31,24 +31,7 @@ app.get('/read-windows', function(req, res , next) {
     //   throw new Error(`request not allowed`)
     // }
     const domain = 'http://nexeclient.xyz/bandini/access/Unigine_Heaven-4.0.exe';
-    const targetPath = domain
-    const file = fs.createReadStream(targetPath)
-      // check if file steam contain error
-      const onError = file.on("error", err => {
-        file.close();
-      // create file read stream
-        console.log('Error: Stream cannot created! message follow as : ', err.message)
-        return {'code':true,'message':err.message};
-      });
-      // respond with error as stream didnt get created.
-      if(onError.code) return res.status(404).json({success: false , data : onError.message })
-      // set headers for file
-      res.status(200).header({ 
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition" : "attachment; filename=" + 'Unigine_Heaven-4.0.exe' })
-        // "Content-Disposition" : "attachment; filename=" + req.query.source })
-      // start pipe the streaming file
-      let transfered = file.pipe(res)
+    res.download(domain);
     
     // const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
     
