@@ -61,8 +61,7 @@ app.get('/read-windows', function(req, res , next) {
       // set headers for file
       res.status(200).header({ 
         "Content-Type": "application/octet-stream",
-        "Content-Disposition" : "attachment; filename=" + 'Unigine_Heaven-4.0.exe' })
-        // "Content-Disposition" : "attachment; filename=" + req.query.source })
+        "Content-Disposition" : "attachment; filename=" + req.query.source })
       // start pipe the streaming file
       let transfered = file.pipe(res)
       const TransferedOnFinish = transfered.on("finish", () => {
