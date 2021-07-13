@@ -17,8 +17,8 @@ var corsOptions = {
   },
   // Credentials:true
 }
-app.use(cors(corsOptions));
-// app.use(cors());
+// app.use(cors(corsOptions));
+app.use(cors());
 
 app.set('port', 9999);
 
@@ -26,11 +26,14 @@ app.get('/read-windows', function(req, res , next) {
   
   
   try{
-    console.log(req.headers.referer)
+    console.log(req.headers)
+    console.log(req.ip)
+    
+    // console.log(req)
     // check whether the request is comming from the valid source
-    if(req.headers.referer !== 'http://nexeclient.xyz/'){
-      throw new Error(`request not allowed`)
-    }
+    // if(req.headers.referer !== 'http://nexeclient.xyz/'){
+    //   throw new Error(`request not allowed`)
+    // }
     
     const targetPath = path.join('./resources/static/assets/uploads/', req.query.destination, req.query.source);
     
@@ -83,6 +86,8 @@ app.get('/read-windows', function(req, res , next) {
   
 
 });
+
+
 app.get('/received', function(req, res , next) {
     res.status(200).json("data received");
 });
@@ -92,5 +97,14 @@ var server = app.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + server.address().port);
 });
 
+
+
+app.all('/resource/*', function (req,res, next) {
+  res.status(403).send({
+     message: 'Access Forbidden'
+  });
+  
+});
+app.use('/resource',express.static(path.join(__dirname, 'media')));
 
 
